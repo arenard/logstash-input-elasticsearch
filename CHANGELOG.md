@@ -1,3 +1,6 @@
+## 5.3.2
+  - Support Elastic Cloud API keys in the `api_key` option, and centralise `api_key` credential handling in the shared `logstash-mixin-elasticsearch_auth_support` gem
+
 ## 5.3.1
   - Fix serverless request failure caused by conflicting `compatible-with` and `Elastic-Api-Version` headers when using elasticsearch-ruby v9 [#269](https://github.com/logstash-plugins/logstash-input-elasticsearch/pull/269)
 

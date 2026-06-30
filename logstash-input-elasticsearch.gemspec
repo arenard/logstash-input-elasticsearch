@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'elasticsearch', '>= 8', '< 10'
   s.add_runtime_dependency 'logstash-mixin-ca_trusted_fingerprint_support', '~> 1.0'
   s.add_runtime_dependency 'logstash-mixin-normalize_config_support', '~>1.0'
+  s.add_runtime_dependency 'logstash-mixin-elasticsearch_auth_support', '~> 0.1'
 
   s.add_runtime_dependency 'tzinfo'
   s.add_runtime_dependency 'tzinfo-data'

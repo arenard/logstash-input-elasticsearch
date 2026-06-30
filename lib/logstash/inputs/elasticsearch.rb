@@ -10,6 +10,7 @@ require 'logstash/plugin_mixins/ecs_compatibility_support/target_check'
 require 'logstash/plugin_mixins/ca_trusted_fingerprint_support'
 require "logstash/plugin_mixins/scheduler"
 require "logstash/plugin_mixins/normalize_config_support"
+require "logstash/plugin_mixins/elasticsearch_auth_support"
 require "base64"
 
 require "elasticsearch"
@@ -87,6 +88,8 @@ class LogStash::Inputs::Elasticsearch < LogStash::Inputs::Base
   include LogStash::PluginMixins::Scheduler
 
   include LogStash::PluginMixins::NormalizeConfigSupport
+
+  include LogStash::PluginMixins::ElasticsearchAuthSupport
 
   config_name "elasticsearch"
 
@@ -540,16 +543,8 @@ class LogStash::Inputs::Elasticsearch < LogStash::Inputs::Base
   end
 
   def setup_api_key(api_key)
-    return {} unless (api_key&.value)
-
-    token = base64?(api_key.value) ? api_key.value : Base64.strict_encode64(api_key.value)
-    { 'Authorization' => "ApiKey #{token}" }
-  end
-
-  def base64?(string)
-    string == Base64.strict_encode64(Base64.strict_decode64(string))
-  rescue ArgumentError
-    false
+    header = elasticsearch_api_key_auth_header(api_key)
+    header ? { 'Authorization' => header } : {}
   end
 
   def prepare_user_agent
